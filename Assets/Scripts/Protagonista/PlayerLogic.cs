@@ -25,8 +25,12 @@ public class PlayerLogic : MonoBehaviour
     // Variable para la Rotación
     private float rotX;
 
-    /* ----- Variables para el ataque ----- */
+    // Variable para correr
+    public bool isRunning;
+
+    // Variable para el ataque
     public bool isAttack;
+
 
     /* ----- Objetos Multifunción ----- */
 
@@ -42,10 +46,14 @@ public class PlayerLogic : MonoBehaviour
 
         // Se asigna el componente de animación
         anim = GetComponent<Animator>();
+
+        // Inicia sin correr
+        isRunning = true;
     }
 
     private void FixedUpdate()
     {
+
         // Movimiento de la posición del personaje
         transform.Translate(new Vector3(x, 0.0f, y) * Time.deltaTime * speedMov);
 
@@ -88,6 +96,20 @@ public class PlayerLogic : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.RightAlt))
         {
             Mouse(false);
+        }
+
+        // Si presiona Shift, y mueve, incrementará la velocidad y activará la animación
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            anim.SetBool("isRunning", true);
+            speedMov += 1.0f;
+
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            anim.SetBool("isRunning", false);
+            speedMov -= 1.0f;
         }
     }
 
