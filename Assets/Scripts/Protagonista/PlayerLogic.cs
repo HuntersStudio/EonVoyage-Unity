@@ -25,6 +25,9 @@ public class PlayerLogic : MonoBehaviour
     // Variable para la Rotación
     private float rotX;
 
+    /* ----- Variables para el ataque ----- */
+    public bool isAttack;
+
     /* ----- Objetos Multifunción ----- */
 
     // Animator para realizar las animaciones
@@ -65,6 +68,16 @@ public class PlayerLogic : MonoBehaviour
 
         /* ----- DETECCIÓN DE TECLAS ----- */
 
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            if (!isAttack)
+            {
+                anim.SetTrigger("slash");
+                isAttack = true;
+            }
+            
+        }
+
         // Al presionar la tecla Alt izquierda, se desbloquea el ratón
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {   
@@ -99,6 +112,11 @@ public class PlayerLogic : MonoBehaviour
             // Se oculta el ratón
             Cursor.visible = false;
         }
+    }
+
+    public void StopSlash()
+    {
+        isAttack = false;
     }
 
 }
