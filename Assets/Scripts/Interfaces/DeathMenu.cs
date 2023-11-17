@@ -35,7 +35,6 @@ public class DeathMenu : MonoBehaviour
             deathMenu.SetActive(true);
             cameraDeath.SetActive(true);
             playerLogic.Mouse(true);
-            dmRebootButton.SetActive(true);
             Debug.Log("La condición en Update de DeathMenu se ha ejecutado");
         }
     }
