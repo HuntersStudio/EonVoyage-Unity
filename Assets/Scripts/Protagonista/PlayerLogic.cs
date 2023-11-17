@@ -17,7 +17,7 @@ public class PlayerLogic : MonoBehaviour
     public float speedMov = speedInitial;
 
     // Constante para el incremento de velocidad
-    public float speedRun = 1.0f;
+    public float speedRun = 4.0f;
 
     // Velocidad Rotación del Ratón
     public float speedRot = 100.0f;
@@ -111,7 +111,7 @@ public class PlayerLogic : MonoBehaviour
         // Si presiona Shift, y no está atacando, incrementará la velocidad y activará la animación
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isAttack)
         {
-            speedMov += speedRun;
+            speedMov = speedRun;
 
             // Si está en movimiento
             if (y > 0)
@@ -133,7 +133,7 @@ public class PlayerLogic : MonoBehaviour
         // Si suelta Shift, dejará de correr
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speedMov -= speedRun;
+            speedMov = speedInitial;
 
             if (isArmed)
             {
