@@ -24,6 +24,7 @@ public class HPLogic : MonoBehaviour
         if (HP <= 0)
         {
             gameObject.SetActive(false);
+            Debug.Log("La condición en Update de HPLogic se ha ejecutado");
         }
     }
 
