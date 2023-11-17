@@ -11,10 +11,13 @@ public class PlayerLogic : MonoBehaviour
     /* ----- Variables para movimiento ----- */
 
     // Constante para velocidad inicial
-    public const float speedInitial = 5.0f;
+    public const float speedInitial = 3.0f;
 
     // Velocidad de movimiento actual
     public float speedMov = speedInitial;
+
+    // Constante para el incremento de velocidad
+    public float speedRun = 1.0f;
 
     // Velocidad Rotación del Ratón
     public float speedRot = 100.0f;
@@ -28,9 +31,13 @@ public class PlayerLogic : MonoBehaviour
     // Variable para correr
     public bool isRunning;
 
+    /* ----- Variables para el ataque ----- */
+
     // Variable para el ataque
     public bool isAttack;
 
+    // Variable para saber si está armado
+    public bool isArmed;
 
     /* ----- Objetos Multifunción ----- */
 
@@ -49,6 +56,9 @@ public class PlayerLogic : MonoBehaviour
 
         // Inicia sin correr
         isRunning = true;
+
+        // Inicia sin estar armado
+        isArmed = false;
     }
 
     private void FixedUpdate()
@@ -98,18 +108,41 @@ public class PlayerLogic : MonoBehaviour
             Mouse(false);
         }
 
-        // Si presiona Shift, y mueve, incrementará la velocidad y activará la animación
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        // Si presiona Shift, y no está atacando, incrementará la velocidad y activará la animación
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isAttack)
         {
-            anim.SetBool("isRunning", true);
-            speedMov += 1.0f;
+            speedMov += speedRun;
+
+            // Si está en movimiento
+            if (y > 0)
+            {
+                // Si está armado, activará la animación de correr mientras está armado.
+                if (isArmed)
+                {
+                    anim.SetBool("isRunningArmed", true);
+                }
+                else
+                {
+                    anim.SetBool("isRunning", true);
+                }
+            }
+            
 
         }
 
+        // Si suelta Shift, dejará de correr
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            anim.SetBool("isRunning", false);
-            speedMov -= 1.0f;
+            speedMov -= speedRun;
+
+            if (isArmed)
+            {
+                anim.SetBool("isRunningArmed", false);
+            } else
+            {
+                anim.SetBool("isRunning", false);
+            }
+            
         }
     }
 

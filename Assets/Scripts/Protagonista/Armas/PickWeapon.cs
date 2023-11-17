@@ -6,11 +6,12 @@ public class PickWeapon : MonoBehaviour
 {
 
     public GameObject[] weapons;
+    public PlayerLogic playerLogic;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerLogic = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerLogic>();
     }
 
     // Update is called once per frame
@@ -30,6 +31,9 @@ public class PickWeapon : MonoBehaviour
         // Activa el arma indicada.
         weapons[num].SetActive(true);
 
+        // El jugador está armado
+        playerLogic.isArmed = true;
+
     }
 
     public void DeactivateWeapon ()
@@ -38,5 +42,8 @@ public class PickWeapon : MonoBehaviour
         {
             weapons[i].SetActive(false);
         }
+        
+        // El jugador deja de estar armado
+        playerLogic.isArmed = false;
     }
 }
