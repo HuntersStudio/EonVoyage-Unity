@@ -11,7 +11,7 @@ public class PlayerLogic : MonoBehaviour
     /* ----- Variables para movimiento ----- */
 
     // Constante para velocidad inicial
-    public const float speedInitial = 3.0f;
+    public const float speedInitial = 1.8f;
 
     // Velocidad de movimiento actual
     public float speedMov = speedInitial;
