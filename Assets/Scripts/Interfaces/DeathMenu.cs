@@ -43,7 +43,7 @@ public class DeathMenu : MonoBehaviour
     {
         // Lógica para reiniciar el juego
         Debug.Log("La Función Reboot de DeathMenu se ha ejecutado");
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Nivel1");
         
     }
 

@@ -33,17 +33,18 @@ public class PlayerLogic : MonoBehaviour
 
     /* ----- Variables para el ataque ----- */
 
-    // Variable para el ataque
-    public bool isAttack;
-
     // Variable para saber si está armado
     public bool isArmed;
+
+    // Variable para saber si está atacando
+    public bool isAttacking;
+
+    public GameObject[] weapons;
 
     /* ----- Objetos Multifunción ----- */
 
     // Animator para realizar las animaciones
     public Animator anim;
-
 
     // Start is called before the first frame update
     void Start()
@@ -55,10 +56,11 @@ public class PlayerLogic : MonoBehaviour
         anim = GetComponent<Animator>();
 
         // Inicia sin correr
-        isRunning = true;
+        isRunning = false;
 
         // Inicia sin estar armado
         isArmed = false;
+
     }
 
     private void FixedUpdate()
@@ -71,6 +73,8 @@ public class PlayerLogic : MonoBehaviour
         rotX = Input.GetAxis("Mouse X");
         transform.Rotate(new Vector3(0, rotX, 0) * Time.deltaTime * speedRot);
 
+        // Siempre hará que deje de atacar para evitar un problema de bucle infinito con el ataque.
+        isAttacking = false;
     }
 
     // Update is called once per frame
@@ -86,14 +90,22 @@ public class PlayerLogic : MonoBehaviour
 
         /* ----- DETECCIÓN DE TECLAS ----- */
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        // Si presiona el click izquierdo, y no está atacando.
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isAttacking )
         {
-            if (!isAttack)
+            // Si está armado, activará el trigger para el Slash, y se pondrá a atacar.
+            if (isArmed)
             {
                 anim.SetTrigger("slash");
-                isAttack = true;
+                isAttacking = true;
             }
-            
+
+            // Si no está armado, activará el trigger para el Punch, y se pondrá a atacar.
+            else
+            {
+                anim.SetTrigger("punch");
+                isAttacking = true;
+            }
         }
 
         // Al presionar la tecla Alt izquierda, se desbloquea el ratón
@@ -108,9 +120,10 @@ public class PlayerLogic : MonoBehaviour
             Mouse(false);
         }
 
-        // Si presiona Shift, y no está atacando, incrementará la velocidad y activará la animación
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isAttack)
+        // Si presiona Shift, incrementará la velocidad y activará la animación
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
+            isRunning = true;
             speedMov = speedRun;
 
             // Si está en movimiento
@@ -126,13 +139,16 @@ public class PlayerLogic : MonoBehaviour
                     anim.SetBool("isRunning", true);
                 }
             }
-            
-
+        }
+        else
+        {
+            isRunning = false;
         }
 
         // Si suelta Shift, dejará de correr
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
+            isRunning = false;
             speedMov = speedInitial;
 
             if (isArmed)
@@ -144,6 +160,7 @@ public class PlayerLogic : MonoBehaviour
             }
             
         }
+
     }
 
     // Método para ocultar y bloquear el Ratón y viceversa
@@ -169,9 +186,16 @@ public class PlayerLogic : MonoBehaviour
         }
     }
 
-    public void StopSlash()
+    public void ActivateAttack()
     {
-        isAttack = false;
+        weapons[0].GetComponent<BoxCollider>().enabled = true;
+        weapons[1].GetComponent<BoxCollider>().enabled = true;
+    }
+
+    public void DeactivateAttack ()
+    {
+        weapons[0].GetComponent<BoxCollider>().enabled = false;
+        weapons[1].GetComponent<BoxCollider>().enabled = false;
     }
 
 }

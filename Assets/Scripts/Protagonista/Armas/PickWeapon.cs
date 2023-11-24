@@ -38,6 +38,7 @@ public class PickWeapon : MonoBehaviour
 
     public void DeactivateWeapon ()
     {
+        // Desactiva todas las armas
         for (int i = 0; i < weapons.Length; i++)
         {
             weapons[i].SetActive(false);
